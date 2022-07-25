@@ -17,7 +17,7 @@
                 Login
             </div>
             <div class="card-body">
-                <form action="query_login.php" method="POST" class="form">
+                <form action="../query_login.php" method="POST" class="form">
                     <div class="form-group">
                         <label for="">username</label>
                         <input type="text" name="username" class="form-control">

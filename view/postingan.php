@@ -1,9 +1,11 @@
 <?php
 // perintah untuk mengecek apakah sudah login atau belum
+require_once('../query_posting_all.php');
 session_start();
 if (empty($_SESSION["username"])) {
     header("location: login.php");
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -74,26 +76,40 @@ if (empty($_SESSION["username"])) {
         </form> -->
     </div>
 
-    <div class="container pt-5">
-        <div class="card">
-            <!-- LOOPING -->
-            <div class="card-header">
-                <span>Pengguna</span>
-                <span class="float-end">Waktu</span>
-            </div>
-            <div class="card-body">
-                <div class="card-text">
-                    Konten
+    <?php if ($hasil->num_rows > 0) : ?>
+        <?php while ($data = $hasil->fetch_array()) : ?>
+            <div class="container pt-3">
+                <div class="card">
+                    <div class="card-header">
+                        <span><?= $data['user_name'] ?></span>
+                        <span class="float-end"><?= date('d M Y H:i:s', strtotime($data['time_post'])) ?> </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text pb-2">
+                            "<?= $data['postingan'] ?>"
+                        </div>
+                        <?php 
+                            $id = $data['id_post']; 
+                            require_once("../koneksi.php");
+                            $sql = "select * from komentar where id_post=" . $id;
+                            
+                            $komen = $koneksi->query($sql);
+                            $jumlah = $komen->num_rows;
+                           
+                            
+                        ?>
+                        <a href="view_komen.php?id=<?php echo $id ?>" class="card-link"><?= $jumlah ?> Komentar</a>
+                        <?php if($_SESSION['username'] == $data['user_name']) : ?>
+                            <a href="edit_posting.php?id=<?php echo $id ?>" class="card-link">Edit</a>
+                            
+                            <a href="../query_delete_post.php?id=<?php echo $id ?>" class="card-link">Hapus</a>
+                        <?php endif; ?>
+                        <a href="reply.php?id=<?php echo $id ?>" class="card-link">Balas</a>
+                    </div>
                 </div>
-                <a href="" class="card-link">Jumlah Komentar</a>
-                <a href="" class="card-link">Edit</a>
-                <a href="" class="card-link">Hapus</a>
-                <a href="" class="card-link">Balas</a>
             </div>
-            <!-- END LOOP YOU -->
-        </div>
-    </div>
-
+        <?php endwhile; ?>
+    <?php endif; ?>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

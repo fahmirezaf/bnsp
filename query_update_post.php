@@ -3,11 +3,12 @@
 require_once("koneksi.php");
 session_start();
 $postingan=$_POST["postingan"];
+$id_post=$_POST["id_post"];
 date_default_timezone_set("Asia/Jakarta");
 $timepost = (new \DateTime())->format('Y-m-d H:i:s');
 // query sql untuk mencari data berdasarkan username dan password
 //$sql="select * from user where user_name='". $username ."' and password='". $password ."'";
-$sql = "INSERT INTO posting (id_post, user_name, postingan,time_post)VALUES ('','".$_SESSION['username']."','". $postingan ."', '". $timepost . "')";
+$sql = "UPDATE `posting` SET `postingan` = '". $postingan ."' where `id_post`=" . $id_post;
 // perintah untuk menjalankan query di sql
 $hasil=$koneksi->query($sql);
 // validasi jika data ditemukan

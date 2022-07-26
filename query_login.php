@@ -1,25 +1,22 @@
-<?php 
+<?php
 // perintah untuk membuka koneksi
 require_once("koneksi.php");
-$username=$_POST["username"];
-$password=$_POST["password"];
+$username = $_POST["username"];
+$password = $_POST["password"];
 // query sql untuk mencari data berdasarkan username dan password
-$sql="select * from user where user_name='". $username ."' and password='". $password ."'";
+$sql = "select * from user where user_name='" . $username . "' and password='" . $password . "'";
 // perintah untuk menjalankan query di sql
-$hasil=$koneksi->query($sql);
+$hasil = $koneksi->query($sql);
 // validasi jika data ditemukan
-if ($hasil->num_rows >0 )
-{
+if ($hasil->num_rows > 0) {
     // perintah untuk merubah data jadi array
-  $data=$hasil->fetch_array();
- session_start();
- // perintah untuk menyimpan data username sementara di session
- $_SESSION["username"]=$data["user_name"];
- header("location: view/index.php");
-}
-else{
+    $data = $hasil->fetch_array();
+    session_start();
+    // perintah untuk menyimpan data username sementara di session
+    $_SESSION["username"] = $data["user_name"];
+    header("location: view/index.php");
+} else {
     // debugging login gagal
-   echo "login gagal";
+    echo "login gagal";
     die();
 }
-?>

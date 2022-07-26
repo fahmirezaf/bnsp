@@ -14,7 +14,7 @@ if ($hasil->num_rows > 0) {
     session_start();
     // perintah untuk menyimpan data username sementara di session
     $_SESSION["username"] = $data["user_name"];
-    header("location: view/index.php");
+    header("location: view/postingan.php");
 } else {
     // debugging login gagal
     echo "login gagal";
